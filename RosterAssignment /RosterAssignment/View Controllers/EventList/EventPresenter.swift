@@ -112,53 +112,7 @@ class EventPresenter {
     //Setup and configure the cell based on event data and render it to the user
     func configureEventCell(cell:TblCell_EventList,indexPath: IndexPath){
         let event = self.eventSectionItems[indexPath.section][indexPath.row]
-        
-        cell.lblDepartureArrivelTime.textColor = Constants.Colours.PrimaryRed
-        cell.lblTitle.textColor = Constants.Colours.Black
-        cell.lblDescription.textColor = Constants.Colours.PrimaryGrey
-        
-        if !event.timeArrive.isEmpty || !event.timeDepart.isEmpty {
-            cell.lblDepartureArrivelTime.text = event.timeDepart + " - " + event.timeArrive
-        }
-        
-        cell.lblStandBy.isHidden = true
-        cell.lblDescription.text = " "
-        
-        switch event.dutyCode {
-        case DutyCode.Flight.rawValue:
-            cell.lblTitle.text = event.departure + " - " + event.destination
-            cell.lblDepartureArrivelTime.isHidden = false
-            cell.imgVwContent.image = UIImage.fontAwesomeIcon(name: .plane, style: .solid, textColor: UIColor.darkText, size: CGSize(width: 35.0, height: 35.0))
-            break
-        case DutyCode.StandBy.rawValue:
-            cell.lblTitle.text = event.dutyCode
-            cell.lblDescription.text = event.dutyCode + " (" + event.departure + ")"
-            cell.lblStandBy.isHidden = false
-            cell.lblDescription.isHidden = false
-            cell.lblDepartureArrivelTime.isHidden = false
-            cell.imgVwContent.image = UIImage.fontAwesomeIcon(name: .clipboardList, style: .solid, textColor: UIColor.darkText, size: CGSize(width: 35.0, height: 35.0))
-            break
-        case DutyCode.LayOver.rawValue:
-            cell.lblTitle.text = event.dutyCode
-            cell.lblDescription.text = event.departure
-            cell.lblDescription.isHidden = false
-            cell.lblDepartureArrivelTime.isHidden = false
-            let iTimeDiffernece = DateFormatManager.shared.getTimeDifferenceFromString(startDate: event.timeDepart, endDate: event.timeArrive)
-            
-            let iHours = iTimeDiffernece.1 < 9 ? "0" + String(iTimeDiffernece.1) : String(iTimeDiffernece.1)
-            let iMinutes = iTimeDiffernece.2 < 9 ? "0" + String(iTimeDiffernece.2) : String(iTimeDiffernece.2)
-            cell.lblDepartureArrivelTime.text = iHours + ":" + iMinutes + " hours"
-            cell.imgVwContent.image = UIImage.fontAwesomeIcon(name: .suitcase, style: .solid, textColor: UIColor.darkText, size: CGSize(width: 35.0, height: 35.0))
-            break
-        case DutyCode.Off.rawValue:
-            cell.lblTitle.text = event.dutyCode
-            cell.lblDescription.text = event.departure
-            cell.lblDepartureArrivelTime.isHidden = true
-            cell.imgVwContent.image = UIImage.fontAwesomeIcon(name: .home, style: .solid, textColor: UIColor.darkText, size: CGSize(width: 35.0, height: 35.0))
-            break
-        default:
-            break
-        }
+        cell.setWith(event: event)
     }
     
     //Setup and configure the cell based on event header data and render it to the user
